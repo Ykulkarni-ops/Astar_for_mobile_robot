@@ -103,3 +103,82 @@ class Astar(object):
         if(dist1 <= 0 or dist2 <= 0 or dist3 == 0 or dist4 == 0 or dist5 == 0 or dist6 == 0 or dist7 == 0 or dist8 == 0 or dist9 == 0 or dist10 == 0):
             return True
         return False
+
+
+    #action to move 30 degree up
+    def ActionMove30Up(self, currRow, currCol, currangle):
+        theta = 30 + currangle
+        if(theta >= 360):
+            theta = theta - 360
+        rad = theta * (3.14/180)
+        self.i = math.sin(rad)
+        self.j = math.cos(rad)
+        i1 = round(self.i,2)
+        j2 = round(self.j)
+        
+        if(self.IsValid(currRow - self.i, currCol + self.j) and self.IsObstacle(currRow - self.i, currCol + self.j) == False):
+            return True
+        return False
+
+
+    #action to move 60 degree up
+    def ActionMove60Up(self, currRow,currCol, currangle):
+        theta = 60 + currangle
+        if(theta >= 360):
+            theta = theta - 360
+        rad = theta * (3.14/180)
+        self.i = math.sin(rad)
+        self.j = math.cos(rad)
+        i1 = round(self.i)
+        j2 = round(self.j,2)
+        
+        if(self.IsValid(currRow - self.i, currCol + self.j) and self.IsObstacle(currRow - self.i, currCol + self.j) == False):
+            return True
+        return False
+
+
+    #action to move 30 degree down
+    def ActionMove30Down(self, currRow,currCol, currangle):
+        theta = currangle - 30
+        if(theta < 0):
+            theta = 360 + theta
+        rad = theta * (3.14/180)
+        self.i = math.sin(rad)
+        self.j = math.cos(rad)
+        i1 = round(self.i,2)
+        j2 = round(self.j)
+        
+        if(self.IsValid(currRow + self.i, currCol + self.j) and self.IsObstacle(currRow + self.i, currCol + self.j) == False):
+            return True
+        return False
+
+
+    #action to move 60 degree down
+    def ActionMove60Down(self, currRow,currCol, currangle):
+        theta = currangle - 60
+        if(theta < 0):
+            theta = 360 + theta
+        rad = theta * (3.14/180)
+        self.i = math.sin(rad)
+        self.j = math.cos(rad)
+        i1 = round(self.i)
+        j2 = round(self.j,2)
+        
+        if(self.IsValid(currRow + self.i, currCol + self.j) and self.IsObstacle(currRow + self.i, currCol + self.j) == False):
+            return True
+        return False
+
+    #action to move straight
+    def ActionMoveStraight(self, currRow,currCol, currangle):
+        theta = 0
+        rad = theta * (3.14/180)
+        self.i = math.sin(rad)
+        self.j = math.cos(rad)
+        i1 = round(self.i)
+        j2 = round(self.j)
+        if(self.IsValid(currRow + self.i, currCol + self.j) and self.IsObstacle(currRow + self.i , currCol + self.j) == False):
+            return True
+        return False
+
+
+    
