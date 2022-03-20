@@ -21,3 +21,6 @@ class Astar(object):
         self.radius = radius
 
     
+    # check if the clearance for the point robot is valid    
+    def validClearance(self, currRow, currCol):
+        return (currRow >= (1 + self.radius + self.clearance) and currRow <= (self.numRows - self.radius - self.clearance) and currCol >= (1 + self.radius + self.clearance) and currCol <= (self.numCols - self.radius - self.clearance))
