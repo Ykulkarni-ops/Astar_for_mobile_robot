@@ -180,5 +180,17 @@ class Astar(object):
             return True
         return False
 
+    #check if the goal is reached 
+    def CheckIfGoal(self, currRow, currCol):
+        check = (((currRow - self.goal[0]) * (currRow - self.goal[0])) + ((currCol - self.goal[1]) * (currCol - self.goal[1])) - ( 1.5 * 1.5))
+        if(check <= 0):
+            global cat
+            global dog
+            cat = currRow
+            dog = currCol
+            print("goal reached")
+            return True
+        else:
+            return False
 
 
