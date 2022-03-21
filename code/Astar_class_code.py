@@ -194,3 +194,88 @@ class Astar(object):
             return False
 
 
+    # Astar algo
+
+     # astar algorithm
+    def Astar(self):
+        # create hashmap to store distances
+        distMap = {}
+        visited = {}
+        path = {}
+        for row in np.arange(1, self.numRows + 1, 0.5):
+            for col in np.arange(1, self.numCols + 1, 0.5):
+                for angle in range(0,360,30):
+                    distMap[(row, col, angle)] = float('inf')
+                    path[(row, col, angle)] = -1
+                    visited[(row, col, angle)] = False
+            
+        # create queue, push the source and mark distance from source to source as zero
+        explored_states = []
+        queue = []
+        heappush(queue, (0, self.start))
+        distMap[self.start] = 0
+
+        while(len(queue) > 0):
+            heapify(queue)
+            _, currNode = heappop(queue)
+            visited[currNode] = True
+            explored_states.append(currNode)
+        
+            # if goal node then exit
+            if(self.CheckIfGoal(currNode[0],currNode[1]) == True):
+                break
+           
+            # go through each edge of current node
+            a1 = currNode[2] + 30
+            if(a1 >= 360):
+                a1 = a1 - 360
+
+            a2 = currNode[2] + 60
+            if(a2 >= 360):
+                a2 = a2 - 360
+
+            a3 = currNode[2] - 30
+            if(a3 < 0):
+                a3 = 360 + a3
+
+            a4 = currNode[2] - 60
+            if(a4 < 0):
+                a4 = 360 + a4
+
+
+            h_dist = (((currNode[0] - self.goal[0]) ** 2) + 
+                       ((currNode[1] - self.goal[1]) ** 2))
+            h_dist = math.sqrt(h_dist)
+            
+        
+            
+            
+            if(self.ActionMove30Up(currNode[0], currNode[1], currNode[2]) and visited[(currNode[0] + round(self.j), currNode[1] + round(self.i), a1)] == False and (distMap[(currNode[0] + round(self.j), currNode[1] + round(self.i), a1)] > (distMap[currNode] + h_dist+1.12))):
+                distMap[(currNode[0] + round(self.j), currNode[1] + round(self.i), a1)] = distMap[currNode] + h_dist +1.12
+                path[(currNode[0] + round(self.j), currNode[1] + round(self.i), a1)] = currNode
+                heappush(queue, (distMap[(currNode[0] + round(self.j), currNode[1] + round(self.i), a1)], (currNode[0] + round(self.j), currNode[1] + round(self.i), a1)))
+
+            if(self.ActionMove60Up(currNode[0], currNode[1], currNode[2]) and visited[(currNode[0] + round(self.j), currNode[1] + round(self.i), a2)] == False and (distMap[(currNode[0] + round(self.j), currNode[1] + round(self.i), a2)] > distMap[currNode] + h_dist+1.12)):
+                distMap[(currNode[0] + round(self.j), currNode[1] + round(self.i), a2)] = distMap[currNode] + h_dist+1.12
+                path[(currNode[0] + round(self.j), currNode[1] + round(self.i), a2)] = currNode
+                heappush(queue, (distMap[(currNode[0] + round(self.j), currNode[1] + round(self.i), a2)], (currNode[0] + round(self.j), currNode[1] + round(self.i), a2)))
+
+            if(self.ActionMove30Down(currNode[0], currNode[1], currNode[2]) and visited[(currNode[0] + round(self.j), currNode[1] + round(self.i), a3)] == False and (distMap[(currNode[0] + round(self.j), currNode[1] + round(self.i), a3)] > distMap[currNode] + h_dist+1.12)):
+                distMap[(currNode[0] + round(self.j), currNode[1] + round(self.i), a3)] = distMap[currNode] + h_dist+1.12
+                path[(currNode[0] + round(self.j), currNode[1] + round(self.i), a3)] = currNode
+                heappush(queue, (distMap[(currNode[0] + round(self.j), currNode[1] + round(self.i), a3)], (currNode[0] + round(self.j), currNode[1] + round(self.i), a3)))
+
+            if(self.ActionMove60Down(currNode[0], currNode[1], currNode[2]) and visited[(currNode[0] + round(self.j), currNode[1] + round(self.i), a4)] == False and (distMap[(currNode[0] + round(self.j), currNode[1] + round(self.i), a4)] > distMap[currNode] + h_dist+1.12)):
+                # print("60Down",a4)
+                distMap[(currNode[0] + round(self.j), currNode[1] + round(self.i), a4)] = distMap[currNode] + h_dist+1.12
+                path[(currNode[0] + round(self.j), currNode[1] + round(self.i), a4)] = currNode
+                heappush(queue, (distMap[(currNode[0] + round(self.j), currNode[1] + round(self.i), a4)], (currNode[0] + round(self.j), currNode[1] + round(self.i), a4)))
+
+            if(self.ActionMoveStraight(currNode[0], currNode[1], currNode[2]) and visited[(currNode[0] + round(self.j), currNode[1] + round(self.i), currNode[2])] == False and (distMap[(currNode[0] + round(self.j), currNode[1] + round(self.i), currNode[2])] > distMap[currNode] + h_dist+1)):
+                # print("Straights none")
+                distMap[(currNode[0] + round(self.j), currNode[1] + round(self.i), currNode[2])] = distMap[currNode] + h_dist+1
+                path[(currNode[0] + round(self.j), currNode[1] + round(self.i), currNode[2])] = currNode
+                heappush(queue, (distMap[(currNode[0] + round(self.j), currNode[1] + round(self.i), currNode[2])], (currNode[0] + round(self.j), currNode[1] + round(self.i), currNode[2])))
+
+
+        
