@@ -84,3 +84,36 @@ def move120(vertex, step):
     new = (xr,yr)
 
     return new
+
+
+# calulating all possible points 
+map_points = []
+for i in range(801):
+    for j in range(501):
+        map_points.append((i/2,(j/2)))
+print(len(map_points))
+
+#all possible points in obstacle space
+
+obstacle_space = []
+
+for pt in map_points:
+
+    x = pt[0]
+    y = pt[1]
+
+    #circle shape for path traversal
+    if (((x - 300)*(x - 300)) + ((y - 185)*(y - 185)) <= (40*40)):
+        obstacle_space.append((x,y))
+
+
+    #hexagon shape for path traversal
+    if x <= 235 and x >= 165 and (74*x - 175*y + 8825 >=0) and (74*x + 175*y - 38425 <=0) and (74*x - 175*y - 3425 <=0) and (74*x + 175*y - 26175 >=0):
+        obstacle_space.append((x,y))
+
+
+    #quad shape for traversal
+    if ((25*x - 79*y + 13715 >= 0) and (6*x - 7*y + 780 <= 0) and (85*x + 69*y - 15825 >= 0)) or ((85*x + 69*y -15825>=0) and (16*x + 5*y - 2180<=0) and (25*x - 79*y + 13715 >=0)):
+        obstacle_space.append((x,y))
+
+print(len(obstacle_space))
