@@ -197,9 +197,9 @@ p_q = []
 
 hp.heappush(p_q,(0,start,start_orientation))
 
-node_cost[int(x_start)][int(y_start)][direction[int(start_orientation)]] = 0
+node_cost[int(x_start)][int(y_start)][direction[int(start_orientation)]] = 500000
 
-total_cost[int(x_start)][int(y_start)][direction[int(start_orientation)]] = 0
+total_cost[int(x_start)][int(y_start)][direction[int(start_orientation)]] = 500000
 
 
 def a_star(a,b):
@@ -215,12 +215,17 @@ def a_star(a,b):
 
         c, curr_ver,orient = hp.heappop(p_q)
 
-
+        # import pdb; pdb.set_trace()
         visited_nodes.append(curr_ver)
 
         tree = cost_of_nodes(curr_ver,size,step_size,orient)
         print(tree)
-
+        new_cost = 0 
+        x= 0
+        y= 0
+        c= 0
+        pose = 0 
+        total_cost[int(x)][int(y)][direction[int(pose)]] = 0 
         for point, values in tree.items():
             c = values[0]
             pose = values[1]
@@ -229,24 +234,32 @@ def a_star(a,b):
 
             if point in visited_nodes:
                 continue
-            new_cost = c + node_cost[curr_ver[0]][curr_ver[1]][direction[int(orient)]]
-            print(new_cost)
-            if new_cost < node_cost[int(x)][int(y)][direction[int(pose)]]:
+            
+            if node_cost[curr_ver[0]][curr_ver[1]][direction[int(orient)]] == 500000 :
+                new_cost = c 
+            else:
+                new_cost = c + node_cost[curr_ver[0]][curr_ver[1]][direction[int(orient)]]
+            
+            if new_cost <= node_cost[int(x)][int(y)][direction[int(pose)]]:
                 node_cost[int(x)][int(y)][direction[int(pose)]] = new_cost
-                print(node_cost)
+
                 backtracking[point] = curr_ver
 
-            goal_dist[int(x)][int(y)][direction[int(pose)]] = heuristic((3,2),(250,400))
+            goal_dist[int(x)][int(y)][direction[int(pose)]] = heuristic(a,b)
             
             
-
-            total_cost[int(x)][int(y)][direction[int(pose)]] = node_cost[x][y][direction[pose]] + goal_dist[x][y][direction[pose]]
+            import pdb; pdb.set_trace()
+            
+            z = int(node_cost[x][y][direction[pose]] + goal_dist[x][y][direction[pose]])
+            if z < 500000:
+                total_cost[int(x)][int(y)][direction[int(pose)]] = z
 
             hp.heappush(p_q,(total_cost[int(x)][int(y)][direction[int(pose)]],point,pose))
 
-            d = ((x-goal[0])**2+(y-goal[1]**2))
-            if d <= 1.5**2:
+            d = ((x-goal[0])**2+(y-goal[1])**2)
+            if d <= 1.5*step_size:
                 star = 0
+                print(d,star)
                 break
             print(tree)
 
