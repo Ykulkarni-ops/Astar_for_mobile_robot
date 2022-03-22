@@ -117,3 +117,34 @@ for pt in map_points:
         obstacle_space.append((x,y))
 
 print(len(obstacle_space))
+
+
+#points for drawing the graph
+map_int_points = []
+
+graph_points = []
+
+
+for i in range(801):
+    for j in range(501):
+        map_int_points.append((i/2,(j/2)))
+
+for pt in map_int_points:
+    x = pt[0]
+    y=  pt[1]
+
+    if (((x - 300)*(x - 300)) + ((y - 185)*(y - 185)) <= (55*55)):
+        graph_points.append((x,y))
+
+    #check hexagon
+    if x <= 250 and x >= 150 and (74*x - 175*y + 11675 >=0) and (74*x + 175*y - 41275 <=0) and (74*x - 175*y - 6275 <=0) and (74*x + 175*y - 23324 >=0):
+        graph_points.append((x,y))
+
+    #check quad
+    if ((25*x - 79*y + 14957 >= 0) and (6*x - 7*y + 641 <= 0) and (85*x + 69*y - 14182 >= 0)) or ((85*x + 69*y -14182>=0) and (16*x + 5*y - 2431<=0) and (25*x - 79*y + 14957 >=0)):
+        graph_points.append((x,y))
+
+
+
+#sorting out the points 
+obstacle_space.sort()
