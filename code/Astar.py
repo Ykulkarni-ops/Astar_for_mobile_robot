@@ -148,3 +148,35 @@ for pt in map_int_points:
 
 #sorting out the points 
 obstacle_space.sort()
+
+def cost_of_nodes(node, size, step, angle):
+    a,b = node[0], node[1]
+    cost = {}
+    if 0 <= a <= size[0] and 0 <= b <= size[1]:
+        p1 = move0(node,step)
+        if p1 not in obstacle_space:
+            cost[p1] = (1,angle)
+
+        p2 = move30(node,step)
+        if p2 not in obstacle_space:
+            cost[p2] = (1.5,angle+30)
+
+        p3 = move60(node,step)
+        if p3 not in obstacle_space:
+            cost[p3] = (1.5,angle+60)
+
+        p4 = move90(node,step)
+        if p4 not in obstacle_space:
+            cost[p4] = (1, angle+90)
+
+        p5 = move120(node,step)
+        if p5 not in obstacle_space:
+            cost[p5] = (1.5,angle+120)
+
+        cost_copy = cost.copy()
+
+        # for k,v in cost_copy.items():
+        #     if k == node:
+        #         del cost[k]
+
+        return cost        
