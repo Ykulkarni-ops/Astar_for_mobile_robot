@@ -200,3 +200,94 @@ hp.heappush(p_q,(0,start,start_orientation))
 node_cost[int(x_start)][int(y_start)][direction[int(start_orientation)]] = 0
 
 total_cost[int(x_start)][int(y_start)][direction[int(start_orientation)]] = 0
+
+
+def a_star(a,b):
+
+    backtracking = {}
+    size = [800,500]
+    if a in obstacle_space or b in obstacle_space:
+        print('Invalid input co-ordinates for goal or robot')
+        print('Run again')
+        exit()
+    star = 1
+    while star != 0:
+
+        c, curr_ver,orient = hp.heappop(p_q)
+
+
+        visited_nodes.append(curr_ver)
+
+        tree = cost_of_nodes(curr_ver,size,step_size,orient)
+        print(tree)
+
+        for point, values in tree.items():
+            c = values[0]
+            pose = values[1]
+            x = point[0]
+            y = point[1]
+
+            if point in visited_nodes:
+                continue
+            new_cost = c + node_cost[curr_ver[0]][curr_ver[1]][direction[int(orient)]]
+            print(new_cost)
+            if new_cost < node_cost[int(x)][int(y)][direction[int(pose)]]:
+                node_cost[int(x)][int(y)][direction[int(pose)]] = new_cost
+                print(node_cost)
+                backtracking[point] = curr_ver
+
+            goal_dist[int(x)][int(y)][direction[int(pose)]] = heuristic((3,2),(250,400))
+            
+            
+
+            total_cost[int(x)][int(y)][direction[int(pose)]] = node_cost[x][y][direction[pose]] + goal_dist[x][y][direction[pose]]
+
+            hp.heappush(p_q,(total_cost[int(x)][int(y)][direction[int(pose)]],point,pose))
+
+            d = ((x-goal[0])**2+(y-goal[1]**2))
+            if d <= 1.5**2:
+                star = 0
+                break
+            print(tree)
+
+
+    return point, backtracking
+
+
+# backtracking 
+
+def backtrack(backtracking,goal,start):
+    path_list = []
+    path_list.append(start)
+
+    for k, v in backtracking_dict.items():
+
+        if k == start:
+            start = v
+            path_list.append(start)
+
+            if v == goal:
+                break
+    return path_list
+
+new_goal_rounded,backtracking_dict= a_star(start,goal)
+backtrackfinal = backtrack(backtracking_dict,start,goal)
+print(backtracking_dict)
+print(backtrackfinal)
+print(visited_nodes)
+
+exit()
+
+new_list_visited = []
+for visited_node in visited_nodes:
+    new_x = visited_node[0]*2
+    new_y = visited_node[1]*2
+    new_list_visited.append((new_x,new_y))
+
+
+
+new_backtracked = []
+for back in backtrackfinal:
+    new_x_b = back[0]*2
+    new_y_b = back[1]*2
+    new_backtracked.append((new_x_b,new_y_b))
