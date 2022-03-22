@@ -276,7 +276,6 @@ print(backtracking_dict)
 print(backtrackfinal)
 print(visited_nodes)
 
-exit()
 
 new_list_visited = []
 for visited_node in visited_nodes:
