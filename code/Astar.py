@@ -180,3 +180,23 @@ def cost_of_nodes(node, size, step, angle):
         #         del cost[k]
 
         return cost        
+
+min_dist_list = {}
+
+visited_nodes = []
+
+node_cost = np.array(np.ones((800,500,12)) * np.inf)
+
+direction = {0:0,30:1,60:2,90:3,120:4,150:5,180:6,210:7,240:8,270:9,300:10,330:11, 360:0}
+
+goal_dist = np.array(np.ones((800,500,12)) * np.inf)
+
+total_cost = np.array(np.ones((800,500,12)) * np.inf)
+
+p_q = []
+
+hp.heappush(p_q,(0,start,start_orientation))
+
+node_cost[int(x_start)][int(y_start)][direction[int(start_orientation)]] = 0
+
+total_cost[int(x_start)][int(y_start)][direction[int(start_orientation)]] = 0
