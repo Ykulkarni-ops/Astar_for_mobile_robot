@@ -291,3 +291,99 @@ for back in backtrackfinal:
     new_x_b = back[0]*2
     new_y_b = back[1]*2
     new_backtracked.append((new_x_b,new_y_b))
+
+# #defining a blank canvas
+new_canvas = np.zeros((500,800,3),np.uint8) 
+
+for c in obstacle_space: #change the name of the variable l
+    x = 2*c[1]
+    y = 2*c[0]
+    new_canvas[(int(x),int(y))]=[255,0,255] #assigning a yellow coloured pixel
+
+
+#flipping the image for correct orientation
+new_canvas = np.flipud(new_canvas)
+#making a copy for backtracking purpose
+new_canvas_copy_backtrack = new_canvas.copy()
+#making a copy for showing the visited nodes on the obstacle space
+#can be used for the animation
+new_canvas_copy_visited = new_canvas.copy()
+
+#showing the obstacle map
+
+cv2.imshow('new_canvas',new_canvas)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+#visited path
+for visit_path in new_list_visited:
+    
+    #print(path)
+    x = int(visit_path[0])
+    y = int(visit_path[1])
+    new_canvas_copy_visited[(int(x),int(y))]=[255,255,255] #setting every backtracked pixel to white
+
+
+#showing the image
+cv2.imshow('visited',new_canvas_copy_visited)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+#backtracked path
+for path in new_backtracked:
+    
+    #print(path)
+    x = int(path[0])
+    y = int(path[1])
+    new_canvas_copy_backtrack[(int(500-y),int(x))]=[255,255,255] #setting every backtracked pixel to white
+
+
+cv2.imshow('backtracked',new_canvas_copy_backtrack)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+#showing animation
+pygame.init()
+
+display_width = 250
+display_height = 400
+
+gameDisplay = pygame.display.set_mode((display_width,display_height),pygame.FULLSCREEN)
+pygame.display.set_caption('Covered Nodes- Animation')
+
+black = (0,0,0)
+white = (0,255,255)
+#new = np.array(new_canvas_copy_visited)
+surf = pygame.surfarray.make_surface(new_canvas_copy_visited)
+
+clock = pygame.time.Clock()
+
+done = False
+while not done:
+    
+    for event in pygame.event.get(): 
+        
+        if event.type == pygame.QUIT:  
+            done = True   
+ 
+    gameDisplay.fill(black)
+    for path in new_list_visited:
+        if path not in new_canvas_copy_visited:
+            pygame.time.wait(1)
+            x = path[0]
+            y = abs(500-path[1])
+            pygame.draw.rect(gameDisplay, white, [x,y,1,1])
+            pygame.display.flip()
+            
+    for path in new_backtracked:
+        
+        pygame.time.wait(5)
+        x = path[0]
+        y = abs(500-path[1])
+        pygame.draw.rect(gameDisplay, (0,0,255), [x,y,1,1])
+        pygame.display.flip()
+
+    done = True
+pygame.quit()
