@@ -30,9 +30,15 @@ To run the code :
 - after the files are checked do the following to obtain results:
 	1. Make sure that both the files dij.py and dijkastra.py are in same folder
 	2. Open terminal in the code folder
-	3. Type python Astar.py or python3 dij.py
+	3. Type python Astar.py or python3 Astar.py
 
 
+## Coordinates
+start = (0,0)
+goal = (100,280)
+radius = 10
+clearance = 5
+step_size = 2
 
 
 ## RESULTS
